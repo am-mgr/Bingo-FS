@@ -13,4 +13,9 @@ let numbersField =
     document.querySelector (".numbers") :?> Browser.Types.HTMLParagraphElement
 
 // Register our listener
-myButton.onclick <- fun _ -> numbersField.innerHTML <- Table.table ()
+myButton.onclick <-
+    fun _ ->
+        numbersField.innerHTML <-
+            [ 0 .. 24 ]
+            |> List.map (fun _ -> Table.bingoTable ())
+            |> List.fold (fun tables table -> tables + table + "<br/>") ""

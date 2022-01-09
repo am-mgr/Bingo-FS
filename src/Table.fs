@@ -1,14 +1,13 @@
 module Table
 
-let tableRows () =
+let private bingoRows () =
 
     let numbers =
         Util.generateNumbers (15)
-        |> Seq.map (fun x -> x.ToString())
-        |> Seq.splitInto 3
+        |> Array.map (fun x -> x.ToString())
+        |> Array.splitInto 3
 
     numbers
-    |> Array.ofSeq
     |> Array.map (fun numbersRow ->
         Array.append numbersRow (Array.init 4 (fun _ -> ""))
         |> Util.shuffle
@@ -17,6 +16,6 @@ let tableRows () =
 
 
 
-let table () =
+let bingoTable () =
 
-    "<table>" + tableRows () + "</table>"
+    "<table>" + bingoRows () + "</table>"

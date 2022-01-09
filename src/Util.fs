@@ -5,19 +5,21 @@ open System
 let private getRandom () =
     Random(DateTime.Now.Ticks.GetHashCode())
 
+let private getRandomNumber () =
+    let rnd = getRandom ()
+    rnd.Next(1, 100)
+
+let rec private internalGenerator count currentNumber (numbers: array<int>) =
+    if count = 0 then
+        numbers
+    else if Array.contains currentNumber numbers then
+        internalGenerator count (getRandomNumber ()) numbers
+    else
+        internalGenerator (count - 1) (getRandomNumber ()) (Array.append numbers [| currentNumber |])
+
 let rec generateNumbers (count: int) =
     let rnd = getRandom ()
-
-    let numbers =
-        seq {
-            for _ in 1 .. count do
-                yield rnd.Next(1, 100)
-        }
-
-    if Seq.distinct numbers |> Seq.length < count then
-        generateNumbers count
-    else
-        numbers
+    internalGenerator count (getRandomNumber ()) [||]
 
 let private swap x y (arr: 'a []) =
     let tmp = arr.[x]
